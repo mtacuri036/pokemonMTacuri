@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Pokédex</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar [(ngModel)]="searchTerm" placeholder="Buscar Pokémon por nombre"></ion-searchbar>
+    <div>
+      <ion-buttons slot="end">
+        <ion-button (click)="filterPokemons()">Buscar</ion-button>
+        <ion-button (click)="resetSearch()" color="secondary" fill="outline">Refrescar</ion-button>
+      </ion-buttons>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-spinner *ngIf="isFiltering" name="dots"></ion-spinner>
+
+  <ion-grid *ngIf="!isFiltering">
+    <ion-row>
+      <ion-col size="6" *ngFor="let pokemon of filteredPokemons">
+        <ion-card>
+          <img [src]="getImageUrl(pokemon)" alt="{{ pokemon.name }}" />
+          <ion-card-header>
+            <ion-card-title>{{ pokemon.name | titlecase }}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-label>
+              <h2>Tipo</h2>
+              <p *ngFor="let type of pokemon.types">{{ type.type.name | titlecase }}</p>
+            </ion-label>
+
+            <ion-label>
+              <h2>Habilidades</h2>
+              <p *ngFor="let ability of pokemon.abilities">{{ ability.ability.name | titlecase }}</p>
+            </ion-label>
+
+            <ion-label>
+              <h2>Estadísticas</h2>
+              <p *ngFor="let stat of pokemon.stats">{{ stat.stat.name | titlecase }}: {{ stat.base_stat }}</p>
+            </ion-label>
+
+            <ion-button expand="block" color="warning" (click)="guardarFavorito(pokemon)">
+              ⭐ Guardar como favorito
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
